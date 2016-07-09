@@ -1,0 +1,30 @@
+#!/bin/bash
+
+selffile=$0
+
+#checkout file, not a branch
+if [ 0 == $3 ];
+then
+    exit 0
+fi
+
+if [ 0 == $(git status | grep "working directory clean" | wc -l) ];
+then
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    echo ':              Warning                                '
+    echo ':    working directory is not clean                   '
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+
+    osname="$(uname -s)"
+    if [ $osname == "Darwin" ];
+    then
+        osascript -e 'display alert "Already Switched Branch" message "But Working directory is Not Clean !"'
+		exit 0
+    fi
+	
+	if [ 1 == "$(echo $osname | grep -i "MING" | wc -l)" ];
+	then
+		wscript "$(dirname $selffile)""/warncheckout.vbs"
+		exit 0
+	fi
+fi
